@@ -22,17 +22,17 @@ Route::get('/', function () {
     return view('tes');
 });
 
-Route::post('/', function (Request $request) {
-    dd($request->all());
-    // Htt
-    // $jar = new CookieJar();
+// Route::post('/', function (Request $request) {
+//     dd($request->all());
+//     // Htt
+//     // $jar = new CookieJar();
 
-    // $client = new Client([
-    //     'cookies' => $jar,
-    // ]);
+//     // $client = new Client([
+//     //     'cookies' => $jar,
+//     // ]);
 
-    // // $response = $client->get('https://api.example.com/data');
+//     // // $response = $client->get('https://api.example.com/data');
 
-    // echo $client->;
-    // // return view('tes');
-})->name('tes');
+//     // echo $client->;
+//     // // return view('tes');
+// })->name('tes');
