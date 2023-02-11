@@ -21,6 +21,7 @@ use Illuminate\Http\Request;
 Route::get('/', function () {
     return response()->json([
         "message" => "Welcome To JKT48 SHOWROOM API",
+        "home" => 'https://www.jkt48-showroom.com/',
         "repository" => "https://github.com/AldyRevigustian/Showroom-Api"
     ]);
 });
