@@ -42,6 +42,12 @@ Route::get('/', function () {
     ]);
 });
 
+Route::get('/test', function () {
+    return response()->json([
+        'Test APi'
+    ]);
+});
+
 // Route::post('/login', [AuthController::class, 'login']);
 Route::post('/login', function (Request $request) {
     $client = new Client();
