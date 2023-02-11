@@ -19,7 +19,10 @@ use Illuminate\Http\Request;
 */
 
 Route::get('/', function () {
-    return view('tes');
+    return response()->json([
+        "message" => "Welcome To JKT48 SHOWROOM API",
+        "repository" => "https://github.com/AldyRevigustian/Showroom-Api"
+    ]);
 });
 
 // Route::post('/', function (Request $request) {

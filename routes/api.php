@@ -4,9 +4,10 @@ use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\LiveController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function(){
+Route::get('/', function () {
     return response()->json([
-        'Ini API'
+        "message" => "Welcome To JKT48 SHOWROOM API",
+        "repository" => "https://github.com/AldyRevigustian/Showroom-Api"
     ]);
 });
 Route::post('/login', [AuthController::class, 'login']);
