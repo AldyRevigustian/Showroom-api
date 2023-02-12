@@ -52,7 +52,7 @@ class FarmingController extends Controller
 
             if (isset($data->live_end)) {
                 return response()->json([
-                    'message' => "Room Offline",
+                    'message' => "Room {$room_id} Offline",
                 ]);
             }
 
