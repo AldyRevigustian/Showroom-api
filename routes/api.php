@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\LiveController;
+use App\Http\Controllers\API\ProfileController;
 use App\Http\Controllers\FarmingController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,6 +17,10 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::prefix('live')->controller(LiveController::class)->group(function () {
     Route::post('/comment', 'send_comment');
+});
+
+Route::prefix('profile')->controller(ProfileController::class)->group(function () {
+    Route::post('/update', 'update_profile');
 });
 
 Route::get('/room_official', [FarmingController::class, 'room_official']);
