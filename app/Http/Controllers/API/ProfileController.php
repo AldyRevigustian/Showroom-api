@@ -35,7 +35,6 @@ class ProfileController extends Controller
                 'user_id' => $user_id,
                 'residence' => $residence,
                 'description' => $description,
-                'is_ng_nick_name' => $is_ng_nick_name,
             ],
         ]);
 
