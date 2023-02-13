@@ -41,16 +41,35 @@ class ProfileController extends Controller
                 return response()->json(
                     [
                         'message' => 'Berhasil Mengupdate Profile'
-                    ]
-                );
-            }
+                        ]
+                    );
+                }
 
-            return response()->json(
-                [
-                    'message' => $updateJson->error_user_msg
+                return response()->json(
+                    [
+                        'message' => $updateJson->error_user_msg
                 ]
             );
         }
+    }
+
+    public function get_avatar(Request $request){
+        $client = new Client();
+        $cookies_id = $request->cookies_id;
+        $offset = $request->offset;
+        $limit = $request->limit;
+
+        $avatars = $client->get("https://www.showroom-live.com/api/user_avatar?offset={$offset}&limit={$limit}", [
+            'headers' => [
+                'Cookie' => $cookies_id,
+            ],
+        ]);
+
+        $avatarsJson = json_decode($avatars->getBody()->getContents());
+
+        return response()->json(
+            $avatarsJson
+        );
     }
 
     public function update_avatar(Request $request)
