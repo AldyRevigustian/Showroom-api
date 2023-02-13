@@ -52,27 +52,27 @@ class FarmingController extends Controller
 
             if (isset($data->live_end)) {
                 return response()->json([
-                    'message' => "Room {$room_id} Offline",
+                    'message' => "[{$room_id}] Offline",
                 ]);
             }
 
             if (isset($data->toast->image)) {
                 return response()->json([
-                    'message' => "Sukses Melakukan farming di {$room_id}",
+                    'message' => "[{$room_id}] Sukses Melakukan farming",
                     'data' => $data
                 ]);
             }
 
             if (isset($data->live_watch_incentive->error)) {
                 return response()->json([
-                    'message' => "Gagal Melakukan farming di {$room_id} Error : {$data->live_watch_incentive->message}",
+                    'message' => "[{$room_id}] Gagal Melakukan farming",
                     'until' => $data->live_watch_incentive->message,
                     'data' => $data
                 ]);
             }
 
             return response()->json([
-                'message' => "Sedang Melakukan farming di {$room_id}",
+                'message' => "[{$room_id}] Sedang Melakukan farming",
                 'data' => $data
             ]);
         }
