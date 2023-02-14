@@ -8,6 +8,17 @@ use Illuminate\Support\Facades\Http;
 
 class FarmingController extends Controller
 {
+    function detail_star($room_id, $cookies_id){
+        $client = new Client();
+        $detailStar = $client->get("https://www.showroom-live.com/api/live/current_user?room_id={$room_id}", [
+            'headers' => [
+                'Cookie' => $cookies_id,
+            ],
+        ]);
+
+        return json_decode($detailStar->getBody()->getContents());
+    }
+
     public function room_official()
     {
         $res = Http::get("https://www.showroom-live.com/api/live/onlives");
@@ -49,17 +60,20 @@ class FarmingController extends Controller
         ]);
         if ($getStar->getStatusCode() == '200') {
             $data = json_decode($getStar->getBody()->getContents());
+            $star = $this->detail_star($room_id, $cookies_id);
 
             if (isset($data->live_end)) {
                 return response()->json([
                     'message' => "[{$room_id}] Offline",
+                    'star' => isset($star->gift_list->normal)
                 ]);
             }
 
             if (isset($data->toast->image)) {
                 return response()->json([
                     'message' => "[{$room_id}] Sukses Melakukan farming",
-                    'data' => $data
+                    'data' => $data,
+                    'star' => isset($star->gift_list->normal) ? $star->gift_list->normal : ''
                 ]);
             }
 
@@ -67,13 +81,15 @@ class FarmingController extends Controller
                 return response()->json([
                     'message' => "[{$room_id}] Gagal Melakukan farming",
                     'until' => $data->live_watch_incentive->message,
-                    'data' => $data
+                    'data' => $data,
+                    'star' => isset($star->gift_list->normal) ? $star->gift_list->normal : ''
                 ]);
             }
 
             return response()->json([
                 'message' => "[{$room_id}] Sedang Melakukan farming",
-                'data' => $data
+                'data' => $data,
+                'star' => isset($star->gift_list->normal) ? $star->gift_list->normal : ''
             ]);
         }
     }
