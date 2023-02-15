@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\Http;
 
 class FarmingController extends Controller
 {
-    function detail_star($room_id, $cookies_id){
+    function detail_star($room_id, $cookies_id)
+    {
         $client = new Client();
         $detailStar = $client->get("https://www.showroom-live.com/api/live/current_user?room_id={$room_id}", [
             'headers' => [
@@ -28,23 +29,25 @@ class FarmingController extends Controller
         foreach ($resBod->onlives as $live) {
             foreach ($live->lives as $official) {
                 if ($official->official_lv == 1) {
-                    $room[] = $official->room_id;
-                    $l['room'] = $room;
+                    $room = $official->room_id;
+                    $roomName = $official->main_name;
+                    $l['room_id'] = $room;
+                    $l['room_name'] = $roomName;
+                    $onlives[] = $l;
                 }
             }
-            $onlives[] = $l['room'];
         }
 
-        $room_id = array_unique(end($onlives));
+        $room_id = collect($onlives)->unique('room_id')->all();
 
         if (count($room_id) > 50) {
-            return response()->json([
-                'room_id' => array_slice($room_id, 0, 50)
-            ]);
+            return response()->json(
+                array_slice($room_id, 0, 50)
+            );
         }
-        return response()->json([
-            'room_id' => $room_id
-        ]);
+        return response()->json(
+            $room_id
+        );
     }
 
     public function farming(Request $request)
@@ -52,6 +55,7 @@ class FarmingController extends Controller
         $client = new Client();
         $cookies_id = $request->cookies_login_id;
         $room_id = $request->room_id;
+        $room_name = $request->room_name;
 
         $getStar = $client->get("https://www.showroom-live.com/api/live/polling?room_id={$room_id}", [
             'headers' => [
@@ -64,14 +68,14 @@ class FarmingController extends Controller
 
             if (isset($data->live_end)) {
                 return response()->json([
-                    'message' => "[{$room_id}] Offline",
+                    'message' => "[{$room_name}] Offline",
                     'star' => isset($star->gift_list->normal)
                 ]);
             }
 
             if (isset($data->toast->image)) {
                 return response()->json([
-                    'message' => "[{$room_id}] Sukses Melakukan farming",
+                    'message' => "[{$room_name}] Sukses Melakukan farming",
                     'data' => $data,
                     'star' => isset($star->gift_list->normal) ? $star->gift_list->normal : ''
                 ]);
@@ -79,7 +83,7 @@ class FarmingController extends Controller
 
             if (isset($data->live_watch_incentive->error)) {
                 return response()->json([
-                    'message' => "[{$room_id}] Gagal Melakukan farming",
+                    'message' => "[{$room_name}] Gagal Melakukan farming",
                     'until' => $data->live_watch_incentive->message,
                     'data' => $data,
                     'star' => isset($star->gift_list->normal) ? $star->gift_list->normal : ''
@@ -87,7 +91,7 @@ class FarmingController extends Controller
             }
 
             return response()->json([
-                'message' => "[{$room_id}] Sedang Melakukan farming",
+                'message' => "[{$room_name}] Sedang Melakukan farming",
                 'data' => $data,
                 'star' => isset($star->gift_list->normal) ? $star->gift_list->normal : ''
             ]);
