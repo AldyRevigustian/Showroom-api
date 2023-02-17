@@ -26,7 +26,7 @@ class LiveController extends Controller
     {
         $res = Http::get("https://www.showroom-live.com/api/room/profile?room_id={$room_id}");
         $resBod = json_decode($res->body());
-        return ['live_id' =>$resBod->live_id, 'room_url_key' => $resBod->room_url_key ];
+        return ['live_id' => $resBod->live_id, 'room_url_key' => $resBod->room_url_key];
     }
 
     public function send_comment(Request $request)
@@ -77,33 +77,76 @@ class LiveController extends Controller
         );
     }
 
-    public function comment_log($room_id)
+    public function send_gift(Request $request)
     {
-        $res = Http::get("https://www.showroom-live.com/api/live/comment_log?room_id={$room_id}");
-        $resBod = json_decode($res->body());
+        $client = new Client();
+        $csrf_token = $request->csrf_token;
+        $cookies_id = $request->cookies_id;
 
-        return response()->json(
-            $resBod
-        );
+        $gift_id = $request->gift_id;
+        $live_id = $request->live_id;
+        $num = $request->num;
+        $is_delay = 0;
+
+        $send_gift = $client->post('https://www.showroom-live.com/api/live/gifting_free', [
+            'headers' => [
+                'Cookie' => $cookies_id,
+            ],
+            'form_params' => [
+                'csrf_token' => $csrf_token,
+                'gift_id' => $gift_id,
+                'live_id' => $live_id,
+                'num' => $num,
+                'is_delay' => $is_delay,
+            ],
+        ]);
+
+        if ($send_gift->getStatusCode() == '200') {
+            $sendGiftJson = json_decode($send_gift->getBody()->getContents());
+
+            if (isset($sendGiftJson->ok)) {
+                return response()->json(
+                    $sendGiftJson
+                );
+            }
+            return response()->json(
+                [
+                    'message' => 'Gagal Send Gift'
+                ]
+            );
+        }
     }
-
-    public function gift_log($room_id)
+    public function bulk_gift(Request $request)
     {
-        $res = Http::get("https://www.showroom-live.com/api/live/gift_log?room_id={$room_id}");
-        $resBod = json_decode($res->body());
+        $client = new Client();
+        $csrf_token = $request->csrf_token;
+        $cookies_id = $request->cookies_id;
 
-        return response()->json(
-            $resBod
-        );
-    }
+        $live_id = $request->live_id;
 
-    public function stage_user_list($room_id)
-    {
-        $res = Http::get("https://www.showroom-live.com/api/live/stage_user_list?room_id={$room_id}");
-        $resBod = json_decode($res->body());
+        $bulk_gift = $client->post('https://www.showroom-live.com/api/live/bulk_gifting_free', [
+            'headers' => [
+                'Cookie' => $cookies_id,
+            ],
+            'form_params' => [
+                'csrf_token' => $csrf_token,
+                'live_id' => $live_id,
+            ],
+        ]);
 
-        return response()->json(
-            $resBod
-        );
+        if ($bulk_gift->getStatusCode() == '200') {
+            $bulkGiftJson = json_decode($bulk_gift->getBody()->getContents());
+
+            if (isset($bulkGiftJson->ok)) {
+                return response()->json(
+                    $bulkGiftJson
+                );
+            }
+            return response()->json(
+                [
+                    'message' => 'Gagal Send Bulk Gift'
+                ]
+            );
+        }
     }
 }
