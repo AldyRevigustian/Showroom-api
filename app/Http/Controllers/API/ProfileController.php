@@ -8,6 +8,19 @@ use Illuminate\Http\Request;
 
 class ProfileController extends Controller
 {
+    public function profile(Request $request)
+    {
+        $client = new Client();
+        $user_id = $request->user_id;
+
+        $profile = $client->get("https://www.showroom-live.com/api/user/profile?user_id={$user_id}");
+        $profileJson = json_decode($profile->getBody()->getContents());
+
+        return response()->json(
+            $profileJson
+        );
+    }
+
     public function update_profile(Request $request)
     {
         $cookies_id = $request->cookies_id;

@@ -82,11 +82,30 @@ class LiveController extends Controller
         $client = new Client();
         $csrf_token = $request->csrf_token;
         $cookies_id = $request->cookies_id;
-
-        $gift_id = $request->gift_id;
-        $live_id = $request->live_id;
         $num = $request->num;
         $is_delay = 0;
+
+        $room_detail = $this->getDetail($request->room_id);
+        $live_id = $room_detail['live_id'];
+
+        switch ($request->gift_name) {
+            case 'a':
+                $gift_id = 1;
+                break;
+            case 'b':
+                $gift_id = 1001;
+                break;
+            case 'c':
+                $gift_id = 1002;
+                break;
+            case 'd':
+                $gift_id = 1003;
+                break;
+            case 'e':
+                $gift_id = 2;
+                break;
+        }
+
 
         $send_gift = $client->post('https://www.showroom-live.com/api/live/gifting_free', [
             'headers' => [
