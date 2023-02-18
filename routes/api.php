@@ -22,7 +22,8 @@ Route::prefix('live')->controller(LiveController::class)->group(function () {
 });
 
 Route::prefix('profile')->controller(ProfileController::class)->group(function () {
-    Route::post('/', 'profile');
+    Route::post('/user', 'profile');
+    Route::post('/detail', 'detail');
     Route::post('/update', 'update_profile');
     Route::post('/update_avatar', 'update_avatar');
     Route::post('/get_avatar', 'get_avatar');

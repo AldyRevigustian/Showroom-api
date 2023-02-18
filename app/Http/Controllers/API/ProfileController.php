@@ -21,6 +21,24 @@ class ProfileController extends Controller
         );
     }
 
+    public function detail(Request $request)
+    {
+        $client = new Client();
+        $cookies_id = $request->cookies_id;
+
+        $detail = $client->get("https://www.showroom-live.com/api/user/detail", [
+            'headers' => [
+                'Cookie' => $cookies_id,
+            ],
+        ]);
+
+        $detailJson = json_decode($detail->getBody()->getContents());
+
+        return response()->json(
+            $detailJson
+        );
+    }
+
     public function update_profile(Request $request)
     {
         $cookies_id = $request->cookies_id;
@@ -54,19 +72,20 @@ class ProfileController extends Controller
                 return response()->json(
                     [
                         'message' => 'Berhasil Mengupdate Profile'
-                        ]
-                    );
-                }
+                    ]
+                );
+            }
 
-                return response()->json(
-                    [
-                        'message' => $updateJson->error_user_msg
+            return response()->json(
+                [
+                    'message' => $updateJson->error_user_msg
                 ]
             );
         }
     }
 
-    public function get_avatar(Request $request){
+    public function get_avatar(Request $request)
+    {
         $client = new Client();
         $cookies_id = $request->cookies_id;
         $offset = $request->offset;
