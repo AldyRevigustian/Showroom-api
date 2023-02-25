@@ -106,7 +106,6 @@ class LiveController extends Controller
                 break;
         }
 
-
         $send_gift = $client->post('https://www.showroom-live.com/api/live/gifting_free', [
             'headers' => [
                 'Cookie' => $cookies_id,
@@ -128,6 +127,7 @@ class LiveController extends Controller
                     $sendGiftJson
                 );
             }
+
             return response()->json(
                 [
                     'message' => 'Gagal Send Gift'
@@ -135,13 +135,15 @@ class LiveController extends Controller
             );
         }
     }
+
     public function bulk_gift(Request $request)
     {
         $client = new Client();
         $csrf_token = $request->csrf_token;
         $cookies_id = $request->cookies_id;
 
-        $live_id = $request->live_id;
+        $room_detail = $this->getDetail($request->room_id);
+        $live_id = $room_detail['live_id'];
 
         $bulk_gift = $client->post('https://www.showroom-live.com/api/live/bulk_gifting_free', [
             'headers' => [
@@ -161,6 +163,7 @@ class LiveController extends Controller
                     $bulkGiftJson
                 );
             }
+
             return response()->json(
                 [
                     'message' => 'Gagal Send Bulk Gift'
