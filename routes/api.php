@@ -19,6 +19,7 @@ Route::prefix('live')->controller(LiveController::class)->group(function () {
     Route::post('/comment', 'send_comment');
     Route::post('/send_gift', 'send_gift');
     Route::post('/bulk_gift', 'bulk_gift');
+    Route::post('/follow', 'follow');
 });
 
 Route::prefix('profile')->controller(ProfileController::class)->group(function () {

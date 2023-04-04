@@ -171,4 +171,22 @@ class LiveController extends Controller
             );
         }
     }
+
+    public function follow(Request $request)
+    {
+        $client = new Client();
+        $cookies_id = $request->cookies_id;
+
+        $followed = $client->get("https://www.showroom-live.com/api/follow/rooms", [
+            'headers' => [
+                'Cookie' => $cookies_id,
+            ],
+        ]);
+
+        $followedJson = json_decode($followed->getBody()->getContents());
+
+        return response()->json(
+            $followedJson
+        );
+    }
 }
