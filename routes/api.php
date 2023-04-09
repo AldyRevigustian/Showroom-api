@@ -29,6 +29,7 @@ Route::prefix('profile')->controller(ProfileController::class)->group(function (
     Route::post('/update', 'update_profile');
     Route::post('/update_avatar', 'update_avatar');
     Route::post('/get_avatar', 'get_avatar');
+    Route::post('/room', 'room');
 });
 
 Route::get('/room_official', [FarmingController::class, 'room_official']);
