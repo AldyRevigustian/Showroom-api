@@ -139,4 +139,23 @@ class ProfileController extends Controller
             );
         }
     }
+
+    public function room(Request $request)
+    {
+        $client = new Client();
+        $cookie = $request->cookie;
+        $room_id = $request->room_id;
+
+        $detail = $client->get("https://www.showroom-live.com/api/room/profile?room_id={$room_id}", [
+            'headers' => [
+                'Cookie' => $cookie,
+            ],
+        ]);
+
+        $detailJson = json_decode($detail->getBody()->getContents());
+
+        return response()->json(
+            $detailJson
+        );
+    }
 }
