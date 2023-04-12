@@ -14,6 +14,7 @@ Route::get('/', function () {
     ]);
 });
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register']);
 
 Route::prefix('live')->controller(LiveController::class)->group(function () {
     Route::post('/comment', 'send_comment');
