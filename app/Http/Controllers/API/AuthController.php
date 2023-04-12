@@ -99,9 +99,49 @@ class AuthController extends Controller
             );
         }
     }
-    public function register(){
-        return response()->json([
-            'tes 2'
+    public function register(Request $request)
+    {
+        $client = new Client();
+
+        $cookies_id = $request->cookies_sr_id;
+        $csrf = $request->csrf_token;
+
+        if (!$cookies_id) {
+            $sess = $this->newSession();
+            $cookies_id = $sess['cookies_id'];
+            $csrf = $sess['csrf'];
+        }
+
+        $register = $client->post('https://www.showroom-live.com/user/sign_up', [
+            'headers' => [
+                'Cookie' => $cookies_id,
+            ],
+            'form_params' => [
+                'csrf_token' => $csrf,
+                'account_id' => $request->account_id,
+                'name' => $request->name,
+                'password' => $request->password,
+                'password_confirm' => $request->password_confirm,
+                'captcha_word' => $request->captcha_word,
+                'avatar_id' => $request->avatar_id,
+            ],
         ]);
+
+        if ($register->getStatusCode() == '200') {
+            // Error
+
+            $registerJson = json_decode($register->getBody()->getContents());
+
+            if ($registerJson->error ?? '') {
+                return response()->json(
+                    $registerJson,
+                );
+            }
+
+            return response()->json([
+                "status" => $registerJson,
+                "profile" => $this->accountProfile($registerJson->user_id)
+            ]);
+        }
     }
 }
