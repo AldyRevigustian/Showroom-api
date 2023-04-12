@@ -47,8 +47,6 @@ class AuthController extends Controller
         $cookies_id = $request->cookies_sr_id;
         $csrf = $request->csrf_token;
 
-        // dd(!$cookies_id);
-
         if (!$cookies_id) {
             $sess = $this->newSession();
             $cookies_id = $sess['cookies_id'];
@@ -128,8 +126,6 @@ class AuthController extends Controller
         ]);
 
         if ($register->getStatusCode() == '200') {
-            // Error
-
             $registerJson = json_decode($register->getBody()->getContents());
 
             if ($registerJson->error ?? '') {
