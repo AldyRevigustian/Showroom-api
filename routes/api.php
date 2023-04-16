@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\LiveController;
 use App\Http\Controllers\API\ProfileController;
+use App\Http\Controllers\API\RoomController;
 use App\Http\Controllers\FarmingController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +21,9 @@ Route::prefix('live')->controller(LiveController::class)->group(function () {
     Route::post('/comment', 'send_comment');
     Route::post('/send_gift', 'send_gift');
     Route::post('/bulk_gift', 'bulk_gift');
+});
+
+Route::prefix('room')->controller(RoomController::class)->group(function () {
     Route::post('/followed_rooms', 'followed_rooms');
     Route::post('/follow', 'follow');
 });
