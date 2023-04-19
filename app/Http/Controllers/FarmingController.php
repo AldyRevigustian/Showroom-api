@@ -20,7 +20,7 @@ class FarmingController extends Controller
         return json_decode($detailStar->getBody()->getContents());
     }
 
-    public function room_official()
+    public function get_room()
     {
         $res = Http::get("https://www.showroom-live.com/api/live/onlives");
         $resBod = json_decode($res->body());
@@ -50,7 +50,7 @@ class FarmingController extends Controller
         );
     }
 
-    public function farming(Request $request)
+    public function start(Request $request)
     {
         $client = new Client();
         $cookies_id = $request->cookies_login_id;

@@ -37,5 +37,7 @@ Route::prefix('profile')->controller(ProfileController::class)->group(function (
     Route::post('/room', 'room');
 });
 
-Route::get('/room_official', [FarmingController::class, 'room_official']);
-Route::post('/farming', [FarmingController::class, 'farming']);
+Route::prefix('farming')->controller(FarmingController::class)->group(function(){
+    Route::get('/room_official', 'get_room');
+    Route::post('/farming', 'start');
+});
