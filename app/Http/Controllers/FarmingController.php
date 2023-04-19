@@ -6,6 +6,8 @@ use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
+use function PHPUnit\Framework\isEmpty;
+
 class FarmingController extends Controller
 {
     function detail_star($room_id, $cookies_id)
@@ -28,12 +30,14 @@ class FarmingController extends Controller
         $onlives = [];
         foreach ($resBod->onlives as $live) {
             foreach ($live->lives as $official) {
-                if ($official->official_lv == 1) {
-                    $room = $official->room_id;
-                    $roomName = $official->main_name;
-                    $l['room_id'] = $room;
-                    $l['room_name'] = $roomName;
-                    $onlives[] = $l;
+                if (isset($official->official_lv)) {
+                    if ($official->official_lv == 1) {
+                        $room = $official->room_id;
+                        $roomName = $official->main_name;
+                        $l['room_id'] = $room;
+                        $l['room_name'] = $roomName;
+                        $onlives[] = $l;
+                    }
                 }
             }
         }
