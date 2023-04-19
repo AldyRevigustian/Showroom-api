@@ -28,7 +28,7 @@ class FarmingController extends Controller
         $onlives = [];
         foreach ($resBod->onlives as $live) {
             foreach ($live->lives as $official) {
-                if (isset($official->official_lv) == 1) {
+                if ($official->official_lv == 1) {
                     $room = $official->room_id;
                     $roomName = $official->main_name;
                     $l['room_id'] = $room;
