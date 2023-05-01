@@ -44,4 +44,5 @@ Unofficial SHOWROOM API
 ----
 
 * JKT48 Showroom  
-https://www.jkt48-showroom.com/
+
+https://jkt48-showroom.vercel.app/

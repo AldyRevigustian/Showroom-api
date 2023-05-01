@@ -4,7 +4,7 @@ use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\LiveController;
 use App\Http\Controllers\API\ProfileController;
 use App\Http\Controllers\API\RoomController;
-use App\Http\Controllers\FarmingController;
+use App\Http\Controllers\API\FarmingController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
