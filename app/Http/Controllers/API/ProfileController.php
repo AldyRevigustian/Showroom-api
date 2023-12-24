@@ -88,11 +88,11 @@ class ProfileController extends Controller
     {
         $client = new Client();
         $cookies_id = $request->cookies_id;
-        $offset = $request->offset;
         $limit = $request->limit;
         $type = $request->type;
+        $page = $request->page ?? 1;
 
-        $avatars = $client->get("https://www.showroom-live.com/api/user_avatar?offset={$offset}&limit={$limit}&type={$type}", [
+        $avatars = $client->get("https://www.showroom-live.com/api/users/me/avatars?type=${type}&count=${limit}&page=${page}", [
             'headers' => [
                 'Cookie' => $cookies_id,
             ],
